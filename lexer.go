@@ -65,7 +65,7 @@ type cursor struct{
 	loc location //line and column at current pointer position
 }
 
-//compare two tokens, check if same value and kind
+//compare two tokens, check if same value and type (kind)
 func(t *token) equals(other *token) bool{
 	return t.value == other.value && t.kind == other.kind
 }
