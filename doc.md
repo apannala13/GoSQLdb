@@ -1,7 +1,7 @@
 #Doc
 
 - db in GOLang
-- implement parsor to support CREATE, INSERT, SELECT queries
+- implement parser to support CREATE, INSERT, SELECT queries
 - in memory backend supporting TEXT and INT types 
 
 
