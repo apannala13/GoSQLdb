@@ -1,2 +1,3 @@
 # GoSQLdb
-Implementing a SQL DB in GoLang.
+Implementing a basic PostgreSQL DB in GoLang.
+
