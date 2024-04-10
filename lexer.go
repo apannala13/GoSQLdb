@@ -65,3 +65,52 @@ func(t *token) equals(other *token) bool{
 //lexer as func signature
 //returns token, cursor and boolean indicating success
 type lexer func(string, cursor) (*token, cursor, bool)
+
+
+
+
+
+// *** Entry Point ***
+
+
+// tkes a source string and returns a list of tokens or an error.
+func lex(source string) ([]*token, error){
+    // empty list of tokens.
+    tokens := []*token{}
+    //  cursor to keep track of the current position in the source string.
+    cur := cursor{}
+
+lex:
+    for cur.pointer < uint(len(source)){
+        // a list of lexer functions to try in sequence.
+        // Each lexer function recognizes different kinds of tokens.
+        lexers := []lexer{lexKeyWord, lexSymbol, lexString, lexNumeric, lexIdentifier}
+        
+        // Iterate over each lexer function.
+        for _, l := range lexers{
+            // lex token using function
+            // If successful, `ok` will be true, and `token` and `newCursor` will be initialized.
+            if token, newCursor, ok := l(source, cur); ok{
+                // Update the cursor to the new position after lexing the token.
+                cur = newCursor
+
+                // If a token was produced, add it to list of tokens.
+                if token != nil{
+                    tokens = append(tokens, token)
+                }
+
+                // Continue from the start of the lex label, skipping the rest of the lexer functions.
+                continue lex
+            }
+        }
+
+        // If no lexer function could lex a token, construct error message. Last successful token
+        hint := ""
+        if len(tokens) > 0{
+            hint = " after " + tokens[len(tokens) - 1].value
+        }
+        return nil, fmt.Errorf("Unable to lex token%s at %d:%d", hint,cur.loc.line, cur.loc.col )
+    }
+    // Return list of lexed tokens and no error once entire source string has been lexed.
+    return tokens, nil
+}
