@@ -1,22 +1,20 @@
-
+// *** Imports ***
 package gosql 
 
-//types and constraints
+
 import (
-	"fmt" //formatting and printing
-	"strings" //string manipulation
+	"fmt" 
+	"strings"
 )
 
-//ytacking location within source 
+// *** App struct and methods ***
 type location struct {
 	line uint
 	col uint
 }
 
-//custom type for representing sql keywords as strings
 type keyword string
 
-//sql keywords
 const (
 	selectKeyword keyword = "select"
 	fromKeyWord keyword = "from"
@@ -30,10 +28,9 @@ const (
 	textKeyWord keyword = "text"
 )
 
-//custom type for representing symbols 
+ 
 type symbol string 
 
-//sql symbols
 const (
 	semicolonSymbol symbol = ";"
 	asteriskSymbol symbol = "*"
@@ -42,30 +39,26 @@ const (
 	rightparenSymbol symbol = ")"
 )
 
-//categorize tokens in SQL
 type tokenKind uint 
 
 //enumerated constants for different kinds of tokens, using 'iota' for automatic incrementation
 const (
-	keywordKind tokenkind = iota //starts at 0, increment by 1 for each line
-	symbolKind // becomes 1
-	identifierKind //2
-	stringKind //3
-	numericKind	 //4
+	keywordKind tokenkind = iota 
+	symbolKind 
+	identifierKind 
+	stringKind 
+	numericKind	 
 )
-//represent token (SQL text with an associated type and location)
 type token struct{
 	value string
 	kind tokenKind
 	loc location
 }
-//keep track of current position
 type cursor struct{
-	pointer uint //index of cur char
-	loc location //line and column at current pointer position
+	pointer uint 
+	loc location 
 }
 
-//compare two tokens, check if same value and type (kind)
 func(t *token) equals(other *token) bool{
 	return t.value == other.value && t.kind == other.kind
 }
